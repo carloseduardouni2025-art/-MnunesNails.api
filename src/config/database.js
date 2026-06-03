@@ -1,4 +1,5 @@
 require('reflect-metadata');
+require('dotenv').config();
 const { DataSource } = require('typeorm');
 
 const AppDataSource = new DataSource({
@@ -10,7 +11,7 @@ const AppDataSource = new DataSource({
   database: process.env.DB_NAME || 'mnunesnails',
   entities: [__dirname + '/../entities/*.js'],
   migrations: [__dirname + '/../migrations/*.js'],
-  synchronize: process.env.NODE_ENV !== 'production',
+  synchronize: false,
   logging: process.env.NODE_ENV === 'development',
 });
 
