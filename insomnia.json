@@ -1,0 +1,279 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2026-06-20T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app",
+  "resources": [
+    {
+      "_id": "wrk_mnunesnails",
+      "_type": "workspace",
+      "name": "MnunesNails API",
+      "description": "API MnunesNails",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "parentId": "wrk_mnunesnails",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:3000/api",
+        "token": "SEU_TOKEN_AQUI"
+      }
+    },
+    {
+      "_id": "fld_health",
+      "_type": "request_group",
+      "parentId": "wrk_mnunesnails",
+      "name": "Health"
+    },
+    {
+      "_id": "fld_auth",
+      "_type": "request_group",
+      "parentId": "wrk_mnunesnails",
+      "name": "Auth"
+    },
+    {
+      "_id": "fld_users",
+      "_type": "request_group",
+      "parentId": "wrk_mnunesnails",
+      "name": "Users"
+    },
+    {
+      "_id": "fld_services",
+      "_type": "request_group",
+      "parentId": "wrk_mnunesnails",
+      "name": "Services"
+    },
+    {
+      "_id": "fld_appointments",
+      "_type": "request_group",
+      "parentId": "wrk_mnunesnails",
+      "name": "Appointments"
+    },
+    {
+      "_id": "req_health",
+      "_type": "request",
+      "parentId": "fld_health",
+      "name": "Health Check",
+      "method": "GET",
+      "url": "{{ _.base_url }}/health",
+      "headers": [],
+      "body": {}
+    },
+    {
+      "_id": "req_auth_login",
+      "_type": "request",
+      "parentId": "fld_auth",
+      "name": "Login",
+      "method": "POST",
+      "url": "{{ _.base_url }}/auth/login",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"phone\": \"11999999999\",\n  \"password\": \"senha123\"\n}"
+      }
+    },
+    {
+      "_id": "req_users_create",
+      "_type": "request",
+      "parentId": "fld_users",
+      "name": "Create User",
+      "method": "POST",
+      "url": "{{ _.base_url }}/users",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"phone\": \"11999999999\",\n  \"password\": \"senha123\"\n}"
+      }
+    },
+    {
+      "_id": "req_users_list",
+      "_type": "request",
+      "parentId": "fld_users",
+      "name": "List Users",
+      "method": "GET",
+      "url": "{{ _.base_url }}/users",
+      "headers": [],
+      "body": {}
+    },
+    {
+      "_id": "req_services_list",
+      "_type": "request",
+      "parentId": "fld_services",
+      "name": "List Services",
+      "method": "GET",
+      "url": "{{ _.base_url }}/services",
+      "headers": [],
+      "body": {}
+    },
+    {
+      "_id": "req_services_find",
+      "_type": "request",
+      "parentId": "fld_services",
+      "name": "Get Service by ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/services/1",
+      "headers": [],
+      "body": {}
+    },
+    {
+      "_id": "req_services_create",
+      "_type": "request",
+      "parentId": "fld_services",
+      "name": "Create Service",
+      "method": "POST",
+      "url": "{{ _.base_url }}/services",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"nome\": \"Manicure\",\n  \"price\": 40.00,\n  \"description\": \"Esmaltação simples nas unhas das mãos\",\n  \"time\": 60\n}"
+      }
+    },
+    {
+      "_id": "req_services_update",
+      "_type": "request",
+      "parentId": "fld_services",
+      "name": "Update Service",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/services/1",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"price\": 45.00,\n  \"description\": \"Esmaltação simples nas unhas das mãos com top coat\"\n}"
+      }
+    },
+    {
+      "_id": "req_services_delete",
+      "_type": "request",
+      "parentId": "fld_services",
+      "name": "Delete Service",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/services/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_appointments_list",
+      "_type": "request",
+      "parentId": "fld_appointments",
+      "name": "List My Appointments",
+      "method": "GET",
+      "url": "{{ _.base_url }}/appointments",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_appointments_find",
+      "_type": "request",
+      "parentId": "fld_appointments",
+      "name": "Get Appointment by ID",
+      "method": "GET",
+      "url": "{{ _.base_url }}/appointments/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {}
+    },
+    {
+      "_id": "req_appointments_create",
+      "_type": "request",
+      "parentId": "fld_appointments",
+      "name": "Create Appointment",
+      "method": "POST",
+      "url": "{{ _.base_url }}/appointments",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"dia\": \"2026-07-01\",\n  \"hora\": \"14:00\"\n}"
+      }
+    },
+    {
+      "_id": "req_appointments_update",
+      "_type": "request",
+      "parentId": "fld_appointments",
+      "name": "Update Appointment",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/appointments/1",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"dia\": \"2026-07-02\",\n  \"hora\": \"15:00\"\n}"
+      }
+    },
+    {
+      "_id": "req_appointments_delete",
+      "_type": "request",
+      "parentId": "fld_appointments",
+      "name": "Cancel Appointment",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/appointments/1",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "body": {}
+    }
+  ]
+}

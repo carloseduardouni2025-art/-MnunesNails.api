@@ -1,27 +1,33 @@
 const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({
-  name: 'Appointments',
-  tableName: 'appointments',
+  name: 'Services',
+  tableName: 'services',
   columns: {
     id: {
       type: Number,
       primary: true,
       generated: true,
     },
-    user_id: {
-      type: Number,
+    nome: {
+      type: String,
+      length: 250,
       nullable: false,
     },
-    dia: {
-      type: String,
-      length: 250,
-      nullable: true,
+    price: {
+      type: 'decimal',
+      precision: 10,
+      scale: 2,
+      nullable: false,
     },
-    hora: {
+    description: {
       type: String,
-      length: 250,
-      nullable: true,
+      length: 500,
+      nullable: false,
+    },
+    time: {
+      type: Number,
+      nullable: false,
     },
     createdAt: {
       type: Date,
@@ -30,14 +36,6 @@ module.exports = new EntitySchema({
     updatedAt: {
       type: Date,
       updateDate: true,
-    },
-  },
-  relations: {
-    user: {
-      type: 'many-to-one',
-      target: 'User',
-      joinColumn: { name: 'user_id' },
-      onDelete: 'CASCADE',
     },
   },
 });
