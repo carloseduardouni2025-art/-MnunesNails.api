@@ -9,7 +9,8 @@
     "migration:generate": "npx typeorm migration:generate -d src/config/database.js --outputJs",
     "migration:run": "npx typeorm migration:run -d src/config/database.js",
     "migration:revert": "npx typeorm migration:revert -d src/config/database.js",
-    "migration:show": "npx typeorm migration:show -d src/config/database.js"
+    "migration:show": "npx typeorm migration:show -d src/config/database.js",
+    "seed:admin": "node src/seeds/seedAdmin.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   "homepage": "https://github.com/carloseduardouni2025-art/-MnunesNails.api#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",

@@ -14,7 +14,7 @@ async function create(req, res) {
 
 async function list(req, res) {
   const users = await listUsers();
-  return res.json(users);
+  return res.json({ users });
 }
 
 module.exports = { create, list };

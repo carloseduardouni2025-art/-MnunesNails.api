@@ -1,8 +1,8 @@
 const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({
-  name: 'Appointments',
-  tableName: 'appointments',
+  name: 'RecoveryToken',
+  tableName: 'recovery_tokens',
   columns: {
     id: {
       type: Number,
@@ -13,28 +13,18 @@ module.exports = new EntitySchema({
       type: Number,
       nullable: false,
     },
-    dia: {
+    token: {
       type: String,
-      length: 250,
-      nullable: true,
+      length: 6,
+      nullable: false,
     },
-    hora: {
-      type: String,
-      length: 250,
-      nullable: true,
+    expires_at: {
+      type: Date,
+      nullable: false,
     },
-    service_id: {
-      type: Number,
-      nullable: true,
-    },
-    status: {
-      type: String,
-      length: 20,
-      default: 'pendente',
-    },
-    notas: {
-      type: String,
-      nullable: true,
+    used: {
+      type: Boolean,
+      default: false,
     },
     createdAt: {
       type: Date,
@@ -51,12 +41,6 @@ module.exports = new EntitySchema({
       target: 'User',
       joinColumn: { name: 'user_id' },
       onDelete: 'CASCADE',
-    },
-    service: {
-      type: 'many-to-one',
-      target: 'Services',
-      joinColumn: { name: 'service_id' },
-      nullable: true,
     },
   },
 });

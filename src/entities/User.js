@@ -9,7 +9,17 @@ module.exports = new EntitySchema({
       primary: true,
       generated: true,
     },
+    name: {
+      type: String,
+      length: 150,
+      nullable: true,
+    },
     phone: {
+      type: String,
+      length: 30,
+      nullable: true,
+    },
+    whatsapp: {
       type: String,
       length: 30,
       nullable: true,
@@ -17,8 +27,12 @@ module.exports = new EntitySchema({
     password: {
       type: String,
       length: 150,
-      unique: true,
       nullable: true,
+    },
+    role: {
+      type: String,
+      length: 10,
+      default: 'client',
     },
     createdAt: {
       type: Date,

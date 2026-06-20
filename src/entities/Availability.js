@@ -1,35 +1,24 @@
 const { EntitySchema } = require('typeorm');
 
 module.exports = new EntitySchema({
-  name: 'Services',
-  tableName: 'services',
+  name: 'Availability',
+  tableName: 'availability',
   columns: {
     id: {
       type: Number,
       primary: true,
       generated: true,
     },
-    nome: {
-      type: String,
-      length: 250,
-      nullable: false,
-    },
-    price: {
-      type: 'decimal',
-      precision: 10,
-      scale: 2,
-      nullable: false,
-    },
-    description: {
-      type: String,
-      length: 500,
+    date: {
+      type: 'date',
       nullable: false,
     },
     time: {
-      type: Number,
+      type: String,
+      length: 10,
       nullable: false,
     },
-    isActive: {
+    available: {
       type: Boolean,
       default: true,
     },

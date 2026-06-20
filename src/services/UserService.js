@@ -4,14 +4,18 @@ const { AppDataSource } = require('../config/database');
 
 const repo = () => AppDataSource.getRepository('User');
 
-async function createUser({ phone, password }) {
+async function createUser({ name, phone, whatsapp, password, role = 'client' }) {
   const hashed = await bcrypt.hash(password, 10);
-  const user = repo().create({ phone, password: hashed });
+  const user = repo().create({ name, phone, whatsapp, password: hashed, role });
   return repo().save(user);
 }
 
 async function listUsers() {
-  return repo().find({ select: { id: true, phone: true, createdAt: true } });
+  return repo().find({ select: { id: true, phone: true, name: true, role: true, createdAt: true } });
+}
+
+async function findUserById(id) {
+  return repo().findOne({ where: { id }, select: { id: true, name: true, phone: true, role: true } });
 }
 
 async function loginUser({ phone, password }) {
@@ -22,7 +26,7 @@ async function loginUser({ phone, password }) {
   }
 
   const token = jwt.sign(
-    { id: user.id, phone: user.phone },
+    { id: user.id, phone: user.phone, role: user.role },
     process.env.JWT_SECRET,
     { expiresIn: '7d' }
   );
@@ -30,4 +34,9 @@ async function loginUser({ phone, password }) {
   return { token };
 }
 
-module.exports = { createUser, listUsers, loginUser };
+async function updatePassword(userId, newPassword) {
+  const hashed = await bcrypt.hash(newPassword, 10);
+  await repo().update({ id: userId }, { password: hashed });
+}
+
+module.exports = { createUser, listUsers, findUserById, loginUser, updatePassword };

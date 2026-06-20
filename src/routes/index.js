@@ -3,6 +3,7 @@ const userRoutes = require('./userRoutes');
 const authRoutes = require('./authRoutes');
 const servicesRoutes = require('./servicesRoutes');
 const appointmentsRoutes = require('./appointmentsRoutes');
+const availabilityRoutes = require('./availabilityRoutes');
 
 const router = Router();
 
@@ -11,5 +12,6 @@ router.use('/users', userRoutes);
 router.use('/auth', authRoutes);
 router.use('/services', servicesRoutes);
 router.use('/appointments', appointmentsRoutes);
+router.use('/availability', availabilityRoutes);
 
 module.exports = router;
