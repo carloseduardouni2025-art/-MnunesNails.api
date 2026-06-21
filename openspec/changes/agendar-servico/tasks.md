@@ -1,24 +1,27 @@
-## 1. Serviço de Agendamento Público
+## 1. Vinculação de user_id no Agendamento
 
-- [ ] 1.1 Criar `src/services/AgendamentoPublicoService.js` com função `bookPublic({ name, whatsapp, service_id, dia, hora, notas })` que: (a) verifica se `service_id` é de serviço ativo, (b) faz find-or-create de `User` pelo `whatsapp`, (c) cria o `Appointment`, (d) bloqueia o slot de `Availability`
-- [ ] 1.2 Implementar lógica find-or-create: buscar `User` por `whatsapp`; se não encontrado, criar com `name`, `whatsapp`, `phone = whatsapp`, `role = 'client'` e senha aleatória via `crypto.randomBytes`
-- [ ] 1.3 Implementar bloqueio de slot: após criar appointment, buscar `Availability` por `{ date: dia, time: hora }` e atualizar `available = false` (sem erro se slot não existir)
+- [x] 1.1 Entity `Appointments` tem coluna `user_id NOT NULL` com relação `many-to-one` para `User`
+- [x] 1.2 `createAppointment({ userId, ... })` em `AppointmentsService` persiste `user_id` do usuário autenticado
+- [x] 1.3 Controller `create` passa `req.user.id` como `userId`
 
-## 2. Controller e Rota Pública
+## 2. Listagem por Cliente
 
-- [ ] 2.1 Criar `src/controllers/AgendamentoPublicoController.js` com handler `book(req, res)` que valida campos obrigatórios (`name`, `whatsapp`, `service_id`, `dia`, `hora`) e chama `AgendamentoPublicoService.bookPublic`
-- [ ] 2.2 Retornar 400 se algum campo obrigatório estiver ausente, 404 se serviço não encontrado, 201 com DTO do agendamento em caso de sucesso
-- [ ] 2.3 Criar `src/routes/agendamentoPublicoRoutes.js` com `POST /` sem middleware de auth
-- [ ] 2.4 Registrar a rota em `src/routes/index.js` no prefixo `/api/agendamentos`
+- [x] 2.1 `listByUser(userId)` em `AppointmentsService` filtra agendamentos pelo `user_id`
+- [x] 2.2 Controller `list` usa `listByUser(req.user.id)` para usuários com `role !== 'admin'`
+- [x] 2.3 `agendamentos.html` exige autenticação via `loadSession()` — redireciona para `login.html` se sem token ou inválido
+- [x] 2.4 Admins são redirecionados para `admin.html`; clientes ficam na página e veem apenas seus agendamentos
 
-## 3. Integração de Cancelamento com Disponibilidade
+## 3. Fluxo de Redirecionamento para Login
 
-- [ ] 3.1 Modificar `cancelAppointment(id)` em `src/services/AppointmentsService.js` para, após mudar status para `cancelado`, buscar o slot em `Availability` pelo `dia` + `hora` do agendamento e atualizar `available = true` (sem erro se slot não existir)
+- [x] 3.1 `requireAuthenticatedUser()` em `script.js` verifica `currentUser` antes de submeter
+- [x] 3.2 `redirectToRegister()` salva rascunho em `sessionStorage` e redireciona para `login.html?mode=register&next=booking`
+- [x] 3.3 `login.js` detecta `mode=register` e abre o formulário de cadastro automaticamente
+- [x] 3.4 Após login/cadastro com `next=booking`, `login.js` redireciona para `index.html#agendamento`
+- [x] 3.5 `restoreBookingDraft()` em `script.js` restaura o rascunho após autenticação
 
 ## 4. Validação Manual
 
-- [ ] 4.1 Testar `POST /api/agendamentos/publico` com payload completo e verificar criação do agendamento e bloqueio do slot
-- [ ] 4.2 Testar `POST /api/agendamentos/publico` com whatsapp já cadastrado e verificar reuso do usuário
-- [ ] 4.3 Testar `POST /api/agendamentos/publico` com `service_id` inválido e verificar retorno 404
-- [ ] 4.4 Testar `POST /api/appointments/:id/cancel` e verificar que o slot é liberado (`available = true`)
-- [ ] 4.5 Testar `GET /api/availability?date=YYYY-MM-DD` e verificar que slot bloqueado não aparece como disponível
+- [ ] 4.1 Acessar `index.html` sem estar logado, preencher formulário e tentar confirmar — verificar redirecionamento para login/cadastro
+- [ ] 4.2 Após cadastrar, verificar que o formulário é restaurado com dados do rascunho
+- [ ] 4.3 Confirmar agendamento logado e verificar que aparece em `agendamentos.html` com os dados corretos
+- [ ] 4.4 Verificar que dois clientes diferentes não veem os agendamentos um do outro

@@ -1,7 +1,7 @@
 const { AppDataSource } = require('../config/database');
 
 const repo = () => AppDataSource.getRepository('Appointments');
-const RELATIONS = ['user', 'service'];
+const RELATIONS = { user: true, service: true };
 
 function capitalize(s) {
   return s ? s.charAt(0).toUpperCase() + s.slice(1) : s;
