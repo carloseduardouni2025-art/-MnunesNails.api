@@ -19,7 +19,8 @@ async function seedAdmin() {
   const existing = await repo.findOne({ where: { phone } });
 
   if (existing) {
-    await repo.update({ phone }, { role: 'admin', name });
+    const hashed = await bcrypt.hash(password, 10);
+    await repo.update({ phone }, { role: 'admin', name, password: hashed });
     console.log(`Admin atualizado: ${phone}`);
   } else {
     const hashed = await bcrypt.hash(password, 10);

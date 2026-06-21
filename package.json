@@ -6,10 +6,10 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "migration:generate": "npx typeorm migration:generate -d src/config/database.js --outputJs",
-    "migration:run": "npx typeorm migration:run -d src/config/database.js",
-    "migration:revert": "npx typeorm migration:revert -d src/config/database.js",
-    "migration:show": "npx typeorm migration:show -d src/config/database.js",
+    "migration:generate": "node node_modules/typeorm/cli.js migration:generate -d src/config/database.js --outputJs",
+    "migration:run": "node node_modules/typeorm/cli.js migration:run -d src/config/database.js",
+    "migration:revert": "node node_modules/typeorm/cli.js migration:revert -d src/config/database.js",
+    "migration:show": "node node_modules/typeorm/cli.js migration:show -d src/config/database.js",
     "seed:admin": "node src/seeds/seedAdmin.js"
   },
   "repository": {
