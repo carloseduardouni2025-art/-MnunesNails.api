@@ -42,6 +42,16 @@ async function findByIdAndUser(id, userId) {
 }
 
 async function createAppointment({ userId, dia, hora, service_id, status, notas }) {
+  const conflict = await repo().findOne({
+    where: { dia, hora },
+    select: ['id', 'status'],
+  });
+  if (conflict && conflict.status !== 'cancelado') {
+    const err = new Error('Horário já está agendado');
+    err.status = 409;
+    throw err;
+  }
+
   const appointment = repo().create({ user_id: userId, dia, hora, service_id, status, notas });
   const saved = await repo().save(appointment);
   return toDto(await repo().findOne({ where: { id: saved.id }, relations: RELATIONS }));
@@ -86,6 +96,14 @@ async function deleteAppointment(id) {
   return result.affected > 0;
 }
 
+async function listTakenTimesByDate(dia) {
+  const rows = await repo().find({ where: { dia }, select: ['hora', 'status'] });
+  return rows
+    .filter((r) => r.status !== 'cancelado')
+    .map((r) => r.hora)
+    .filter(Boolean);
+}
+
 module.exports = {
   listAll,
   listByUser,
@@ -96,4 +114,5 @@ module.exports = {
   cancelAppointment,
   duplicateAppointment,
   deleteAppointment,
+  listTakenTimesByDate,
 };

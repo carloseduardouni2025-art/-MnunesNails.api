@@ -1,10 +1,11 @@
 const { Router } = require('express');
-const { list, findById, create, update, cancel, duplicate, remove } = require('../controllers/AppointmentsController');
+const { list, findById, create, update, cancel, duplicate, remove, listTaken } = require('../controllers/AppointmentsController');
 const auth = require('../middleware/auth');
 const requireAdmin = require('../middleware/requireAdmin');
 
 const router = Router();
 
+router.get('/taken', listTaken);
 router.get('/', auth, list);
 router.get('/:id', auth, findById);
 router.post('/', auth, create);

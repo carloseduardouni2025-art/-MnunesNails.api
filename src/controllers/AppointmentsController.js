@@ -8,6 +8,7 @@ const {
   cancelAppointment,
   duplicateAppointment,
   deleteAppointment,
+  listTakenTimesByDate,
 } = require('../services/AppointmentsService');
 
 async function list(req, res) {
@@ -28,8 +29,13 @@ async function findByIdHandler(req, res) {
 
 async function create(req, res) {
   const { dia, hora, service_id, status, notas } = req.body;
-  const appointment = await createAppointment({ userId: req.user.id, dia, hora, service_id, status, notas });
-  return res.status(201).json({ appointment });
+  try {
+    const appointment = await createAppointment({ userId: req.user.id, dia, hora, service_id, status, notas });
+    return res.status(201).json({ appointment });
+  } catch (err) {
+    if (err.status === 409) return res.status(409).json({ message: err.message });
+    throw err;
+  }
 }
 
 async function update(req, res) {
@@ -56,4 +62,11 @@ async function remove(req, res) {
   return res.json({ message: 'Agendamento removido com sucesso' });
 }
 
-module.exports = { list, findById: findByIdHandler, create, update, cancel, duplicate, remove };
+async function listTaken(req, res) {
+  const { date } = req.query;
+  if (!date) return res.status(400).json({ message: 'date é obrigatório' });
+  const takenTimes = await listTakenTimesByDate(date);
+  return res.json({ takenTimes });
+}
+
+module.exports = { list, findById: findByIdHandler, create, update, cancel, duplicate, remove, listTaken };
