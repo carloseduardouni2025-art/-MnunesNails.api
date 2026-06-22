@@ -44,7 +44,7 @@ async function findByIdAndUser(id, userId) {
 async function createAppointment({ userId, dia, hora, service_id, status, notas }) {
   const conflict = await repo().findOne({
     where: { dia, hora },
-    select: ['id', 'status'],
+    select: { id: true, status: true },
   });
   if (conflict && conflict.status !== 'cancelado') {
     const err = new Error('Horário já está agendado');
@@ -97,7 +97,7 @@ async function deleteAppointment(id) {
 }
 
 async function listTakenTimesByDate(dia) {
-  const rows = await repo().find({ where: { dia }, select: ['hora', 'status'] });
+  const rows = await repo().find({ where: { dia }, select: { hora: true, status: true } });
   return rows
     .filter((r) => r.status !== 'cancelado')
     .map((r) => r.hora)
